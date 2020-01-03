@@ -13,7 +13,7 @@ KCDFW_LEVEL_BOOTSTRAP	= 10;
 
 
 kcdfw = {
-	distribution = false,
+	distribution = true, -- [intermeta:true]
 
 	package = {
 		name = "&{MOD_NAME}",

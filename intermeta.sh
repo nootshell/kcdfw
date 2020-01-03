@@ -37,7 +37,7 @@ echo ' done.';
 
 echo -n 'Updating metadata in scripts...';
 
-PATTERN='';
+PATTERN='s~^\(.*[[:space:]]*=[[:space:]]*\)\([^,]*\)\([,]\?[[:space:]]*--[[:space:]]*\[intermeta:\(.*\)\]\)$~\1\4\3~g;';
 for VAR in MOD_{NAME,DESCRIPTION,AUTHOR,VERSION,BUILD_DATE}; do
 	PATTERN+="s~&{${VAR}}~${!VAR}~g;";
 done;
