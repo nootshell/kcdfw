@@ -68,7 +68,11 @@ parse_params() {
 			fi
 		fi
 
-		export -n "${PARAMS[${KEY}]}"="${OPTARG}";
+		if declare -f "${PARAMS[${KEY}]}" >/dev/null 2>&1; then
+			"${PARAMS[${KEY}]}" "${OPTARG}";
+		else
+			export -n "${PARAMS[${KEY}]}"="${OPTARG}";
+		fi
 	done
 }
 

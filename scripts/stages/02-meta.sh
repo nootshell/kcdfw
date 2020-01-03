@@ -7,13 +7,19 @@ DIR="$(realpath -m "${0}/..")";
 
 
 
-declare P_AUTHOR P_NAME P_DESCRIPTION P_VERSION;
+declare P_AUTHOR P_NAME P_DESCRIPTION P_VERSION
+
+declare -a P_REQUIRES=();
+p_requires_append() {
+	P_REQUIRES+=("${@}");
+}
 
 PARAMS+=(
 	['a:']=P_AUTHOR
 	['n:']=P_NAME
 	['D:']=P_DESCRIPTION
 	['V:']=P_VERSION
+	['R:']=p_requires_append
 );
 
 parse_params "${@}";
@@ -33,6 +39,20 @@ BUILD_DATE="$(date --utc +'%Y-%m-%d %H:%M:%S %Z')";
 
 
 
+DEPENDENCIES='';
+if [ ${#P_REQUIRES[@]} -gt 0 ]; then
+	DEPENDENCIES="
+		<dependencies>";
+
+	for DEP in "${P_REQUIRES[@]}"; do
+		DEPENDENCIES+="
+			<req_mod>${DEP}</req_mod>";
+	done
+
+	DEPENDENCIES+="
+		</dependencies>";
+fi
+
 cat <<EOF > "${P_INTERMEDIATE}/${BASENAME_FINAL}/mod.manifest"
 <?xml version="1.0" encoding="utf-8" ?>
 <kcd_mod>
@@ -41,7 +61,7 @@ cat <<EOF > "${P_INTERMEDIATE}/${BASENAME_FINAL}/mod.manifest"
 		<name>${P_NAME}</name>
 		<description>${P_DESCRIPTION}</description>
 		<version>${P_VERSION}</version>
-		<created_on>${BUILD_DATE}</created_on>
+		<created_on>${BUILD_DATE}</created_on>${DEPENDENCIES}
 	</info>
 </kcd_mod>
 EOF

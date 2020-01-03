@@ -12,6 +12,15 @@ declare \
 	P_AUTHOR P_NAME P_DESCRIPTION P_VERSION \
 	P_ARCHIVE;
 
+declare -a P_REQUIRES;
+p_requires_append() {
+	for REQ in "${@}"; do
+		P_REQUIRES+=(
+			-R "${REQ}"
+		);
+	done
+}
+
 PARAMS+=(
 	['d:']=P_PATH_DOCS
 	['s:']=P_PATH_SCRIPTS
@@ -20,6 +29,7 @@ PARAMS+=(
 	['n:']=P_NAME
 	['D:']=P_DESCRIPTION
 	['V:']=P_VERSION
+	['R:']=p_requires_append
 
 	['o:']=P_ARCHIVE
 );
@@ -41,7 +51,8 @@ env -i "${STAGES}"/02-meta.sh \
 	-a "${P_AUTHOR}" \
 	-n "${P_NAME}" \
 	-D "${P_DESCRIPTION}" \
-	-V "${P_VERSION}";
+	-V "${P_VERSION}" \
+	"${P_REQUIRES[@]}";
 
 env -i "${STAGES}"/03-pak.sh \
 	-i "${P_INTERMEDIATE}";
