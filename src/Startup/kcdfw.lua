@@ -188,7 +188,7 @@ end
 
 kcdfw.logBootstrap("Bootstrapping started.");
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration", "EventListeners");
-kcdfw.bootstrap(kcdfw.paths.util, "Tables");
+kcdfw.bootstrap(kcdfw.paths.util, "Tables", "Text");
 kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap("Bootstrapping finished.");
 
@@ -237,8 +237,10 @@ kcdfw.dumpToConsole = function(cmdline, a)
 	end
 
 	kcdfw.logAlways("\teventMap:");
+	local n;
 	for type, map in pairs(kcdfw.eventMap) do
-		kcdfw.logAlways("\t\t.%s (%u callbacks)", type, kcdfw.countTableEntries(map));
+		n = kcdfw.countTableEntries(map);
+		kcdfw.logAlways("\t\t.%s (%u callback%s)", type, n, kcdfw.getTextS(n));
 	end
 end
 
