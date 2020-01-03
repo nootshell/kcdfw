@@ -2,15 +2,23 @@ if _VERSION == 'Lua 5.1' then
 	load = loadstring
 end
 
+local function clock()
+	if kcdfw.runLocal then
+		return os.clock();
+	end
+
+	return 0;
+end
+
 kcdfw.evalString = function (expr)
 	kcdfw.logWarning("Beginning eval of expression: %q", expr);
 
-	local tBegin = os.clock();
+	local tBegin = clock();
 	local f, error = load(expr);
 	if not error then
-		local tPreExec = os.clock();
+		local tPreExec = clock();
 		local result = f();
-		local tPostExec = os.clock();
+		local tPostExec = clock();
 
 		local resultPad = "";
 		if (type(result) == "string") then
