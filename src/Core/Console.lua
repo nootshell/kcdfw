@@ -26,6 +26,8 @@ local function workaroundStupidShit(fmt, tbl)
 	return newTable
 end
 
+unpack = table.unpack
+
 
 kcdfw.log = function (level, fmt, ...)
 	local trueLevel = kcdfw.bitwiseAnd(level, 0x0FFF);
