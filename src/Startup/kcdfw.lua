@@ -22,58 +22,47 @@ kcdfw = {
 		version = "&{MOD_VERSION}"
 	},
 
-	__funcs = {
-		log = function (level, fmt, ...)
-			if kcdfw.distribution and level == "debug" then
-				return;
-			end
-
-			print(
-				(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...)
-			);
+	log = function (level, fmt, ...)
+		if kcdfw.distribution and level == "debug" then
+			return;
 		end
-	},
 
+		print(
+			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...)
+		);
+	end,
 	logLevel = KCDFW_LEVEL_INFO
 };
 
 
 
 
-function kcdfw:log(level, fmt, ...)
-	if level > kcdfw.logLevel then
-		return
-	end
-
-	kcdfw.__funcs.log(level, fmt, ...)
+kcdfw.logDebug = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_DEBUG, fmt, ...)
 end
 
-function kcdfw:logDebug(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_DEBUG, fmt, ...)
+kcdfw.logVerbose = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_VERBOSE, fmt, ...)
 end
 
-function kcdfw:logVerbose(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_VERBOSE, fmt, ...)
+kcdfw.logInfo = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_INFO, fmt, ...)
 end
 
-function kcdfw:logInfo(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_INFO, fmt, ...)
+kcdfw.logNotice = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_NOTICE, fmt, ...)
 end
 
-function kcdfw:logNotice(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_NOTICE, fmt, ...)
+kcdfw.logWarning = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_WARNING, fmt, ...)
 end
 
-function kcdfw:logWarning(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_WARNING, fmt, ...)
+kcdfw.logError = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_ERROR, fmt, ...)
 end
 
-function kcdfw:logError(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_ERROR, fmt, ...)
-end
-
-function kcdfw:logBootstrap(fmt, ...)
-	kcdfw:log(KCDFW_LEVEL_BOOTSTRAP, fmt, ...)
+kcdfw.logBootstrap = function (fmt, ...)
+	kcdfw.log(KCDFW_LEVEL_BOOTSTRAP, fmt, ...)
 end
 
 
@@ -103,30 +92,30 @@ local function buildPaths()
 	};
 end
 
-
 kcdfw.paths = buildPaths();
 
-kcdfw:logDebug("paths.root    = %q", kcdfw.paths.root);
-kcdfw:logDebug("paths.core    = %q", kcdfw.paths.core);
+kcdfw.logDebug("paths.root    = %q", kcdfw.paths.root);
+kcdfw.logDebug("paths.core    = %q", kcdfw.paths.core);
 
 
 
 
 KCDFW_MODULE_PATH = nil;
-function kcdfw:bootstrap(base, ...)
+
+kcdfw.bootstrap = function (base, ...)
 	for i, module in ipairs({...}) do
 		KCDFW_MODULE_PATH = ("%s/%s.lua"):format(base, module);
 
-		kcdfw:logVerbose("Module load: %q", KCDFW_MODULE_PATH);
+		kcdfw.logVerbose("Module load: %q", KCDFW_MODULE_PATH);
 		if kcdfw.distribution then
 			Script.ReloadScript(KCDFW_MODULE_PATH);
 		else
 			dofile(KCDFW_MODULE_PATH);
 		end
-		kcdfw:logBootstrap("Module init: %q", KCDFW_MODULE_PATH);
+		kcdfw.logBootstrap("Module init: %q", KCDFW_MODULE_PATH);
 	end
 
 	KCDFW_MODULE_PATH = nil;
 end
 
-kcdfw:bootstrap(kcdfw.paths.core, "Logging");
+kcdfw.bootstrap(kcdfw.paths.core, "Logging");
