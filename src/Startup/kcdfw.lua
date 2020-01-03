@@ -22,10 +22,10 @@ kcdfw = {
 	runLocal = true, -- [intermeta:false]
 
 	package = {
-		name = "&{MOD_NAME}",
-		author = "&{MOD_AUTHOR}",
-		date = "&{MOD_BUILD_DATE}",
-		version = "&{MOD_VERSION}"
+		name = "&{META_NAME}",
+		author = "&{META_AUTHOR}",
+		date = "&{META_BUILD_DATE}",
+		version = "&{META_VERSION}"
 	},
 
 	eventMap = { },
