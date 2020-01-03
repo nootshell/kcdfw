@@ -1,9 +1,3 @@
-if ((!NO_SET)); then
-	set -e;
-fi
-
-
-
 declare -i P_VERBOSE=0 P_QUIET=0;
 
 log() {
