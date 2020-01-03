@@ -158,4 +158,62 @@ end
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
 kcdfw.bootstrap(kcdfw.paths.util, "Tables");
 
-kcdfw.registerCommand('kcdfw_test', "kcdfw.logWarning(%line)", 'testing');
+
+
+
+kcdfw.dumpToConsole = function(cmdline)
+	kcdfw.logAlways("Commandline given to function: %q", cmdline);
+
+	if cmdline then
+		local nopts = {};
+		local args = kcdfw.parseCmdline(cmdline, nopts);
+		local argc = kcdfw.countTableEntries(args);
+
+		if argc > 0 then
+			kcdfw.logAlways("Arguments passed to this function:");
+			for key, value in pairs(args) do
+				kcdfw.logAlways("\t%q = %q", key, value);
+			end
+		end
+
+		if #nopts > 0 then
+			kcdfw.logAlways("Nonoptions found while parsing arguments:");
+			for i, value in ipairs(nopts) do
+				kcdfw.logAlways("\t%q", value);
+			end
+		end
+	end
+
+	local dumpVars;
+
+	kcdfw.logAlways("Version:");
+	dumpVars = {
+		"date", "version"
+	};
+	for i, var in ipairs(dumpVars) do
+		kcdfw.logAlways("\t%s = %q", var, kcdfw.package[var]);
+	end
+
+	kcdfw.logAlways("State:");
+	dumpVars = {
+		"distribution", "runLocal"
+	};
+	for i, var in ipairs(dumpVars) do
+		kcdfw.logAlways("\t%s = %q", var, kcdfw[var])
+	end
+end
+
+kcdfw.registerCommand(
+	"kcdfw_dump",
+	"kcdfw:dumpToConsole(%line)",
+	"Dumps KCDFW state to the console."
+);
+
+
+
+
+kcdfw.log(
+	((kcdfw.runLocal and KCDFW_LEVEL_BOOTSTRAP) or KCDFW_LEVEL_INFO),
+	"KCDFW initialized, run %q to dump state.",
+	((kcdfw.runLocal and "kcdfw.dumpToConsole([cmdline])") or "kcdfw_dump")
+);
