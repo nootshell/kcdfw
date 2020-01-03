@@ -193,10 +193,10 @@ kcdfw.logBootstrap("Bootstrapping finished.");
 
 
 
-kcdfw.dumpToConsole = function(cmdline)
+kcdfw.dumpToConsole = function(cmdline, a)
 	kcdfw.logAlways("Commandline given to function: %q", cmdline);
 
-	if cmdline then
+	if type(cmdline) == "string" then
 		local nopts = {};
 		local args = kcdfw.parseCmdline(cmdline, nopts);
 		local argc = kcdfw.countTableEntries(args);
@@ -237,7 +237,7 @@ end
 
 kcdfw.registerCommand(
 	"kcdfw_dump",
-	"kcdfw:dumpToConsole(%line)",
+	"kcdfw.dumpToConsole(%line)",
 	"Dumps KCDFW state to the console."
 );
 
