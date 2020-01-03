@@ -155,9 +155,11 @@ kcdfw.bootstrap = function (base, ...)
 	KCDFW_MODULE_PATH = nil;
 end
 
+kcdfw.logBootstrap("Bootstrapping started.");
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
 kcdfw.bootstrap(kcdfw.paths.util, "Tables");
 kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
+kcdfw.logBootstrap("Bootstrapping finished.");
 
 
 
