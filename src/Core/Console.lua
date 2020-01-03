@@ -26,7 +26,9 @@ local function workaroundStupidShit(fmt, tbl)
 	return newTable
 end
 
-unpack = table.unpack
+if _VERSION == 'Lua 5.1' then
+	table.unpack = unpack
+end
 
 
 kcdfw.log = function (level, fmt, ...)
@@ -52,12 +54,12 @@ kcdfw.log = function (level, fmt, ...)
 
 	local strFormatted;
 	if (kcdfw.bitwiseAnd(level, KCDFW_FLAG_NO_PREFIX) == KCDFW_FLAG_NO_PREFIX) then
-		strFormatted = fmt:format(unpack(workaroundStupidShit(fmt, {...})));
+		strFormatted = fmt:format(table.unpack(workaroundStupidShit(fmt, {...})));
 	else
 		if trueLevel > 0 then
-			strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(sauce, trueLevel, unpack(workaroundStupidShit(fmt, {...})));
+			strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(sauce, trueLevel, table.unpack(workaroundStupidShit(fmt, {...})));
 		else
-			strFormatted = (("%s %s"):format("[%s]", fmt)):format(sauce, unpack(workaroundStupidShit(fmt, {...})));
+			strFormatted = (("%s %s"):format("[%s]", fmt)):format(sauce, table.unpack(workaroundStupidShit(fmt, {...})));
 		end
 	end
 

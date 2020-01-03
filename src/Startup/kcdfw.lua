@@ -1,3 +1,8 @@
+require("os");
+
+
+
+
 KCDFW_LEVEL_DEBUG 		= 45;
 
 KCDFW_LEVEL_VERBOSE		= 40;
