@@ -104,10 +104,9 @@ make_archive() {
 	rm -f "${ARCHIVE}";
 
 	if [ -n "${ROOT_NAME}" ]; then
-		local NEW_ROOT="${ROOT}/${ROOT_NAME}";
-		mkdir -p "${NEW_ROOT}";
-		mv "${ROOT}"/* "${NEW_ROOT}" >/dev/null 2>&1; # Would use -u, but -u lies and actually matches against equally old files as well (> != >=, GNU). Bummer.
-		ROOT="${NEW_ROOT}";
+		local ACTUAL_ROOT="${ROOT}/${ROOT_NAME}";
+		mkdir -p "${ACTUAL_ROOT}";
+		mv "${ROOT}"/* "${ACTUAL_ROOT}" >/dev/null 2>&1; # Would use -u, but -u lies and actually matches against equally old files as well (> != >=, GNU). Bummer.
 	fi
 
 	case "${TYPE}" in
