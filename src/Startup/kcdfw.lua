@@ -145,7 +145,7 @@ end
 
 
 
-local function buildPaths()
+kcdfw.getScriptRoot = function()
 	local pwdPath = debug.getinfo(1, "S").source:sub(2);
 	pwdPath = pwdPath:sub(
 		1,
@@ -162,6 +162,12 @@ local function buildPaths()
 	else
 		rootPath = pwdPath;
 	end
+
+	return rootPath
+end
+
+local function buildPaths()
+	local rootPath = kcdfw.getScriptRoot();
 
 	return {
 		root = rootPath,
