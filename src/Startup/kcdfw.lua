@@ -118,4 +118,6 @@ kcdfw.bootstrap = function (base, ...)
 	KCDFW_MODULE_PATH = nil;
 end
 
-kcdfw.bootstrap(kcdfw.paths.core, "Logging");
+kcdfw.bootstrap(kcdfw.paths.core, "Logging", "Registration");
+
+kcdfw.registerCommand('kcdfw_test', "kcdfw.log(%line)", 'testing');
