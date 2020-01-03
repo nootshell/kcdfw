@@ -184,26 +184,26 @@ kcdfw.paths = buildPaths();
 
 KCDFW_MODULE_PATH = nil;
 
-kcdfw.bootstrap = function (base, ...)
+kcdfw.bootstrap = function (context, base, ...)
 	for i, module in ipairs({...}) do
 		KCDFW_MODULE_PATH = ("%s/%s.lua"):format(base, module);
 
-		kcdfw.logVerbose(kcdfw.package.name, "Module load: %q", KCDFW_MODULE_PATH);
+		kcdfw.logVerbose(context.package.name, "Module load: %q", KCDFW_MODULE_PATH);
 		if not kcdfw.runLocal then
 			Script.ReloadScript(KCDFW_MODULE_PATH);
 		else
 			dofile(KCDFW_MODULE_PATH);
 		end
-		kcdfw.logBootstrap(kcdfw.package.name, "Module init: %q", KCDFW_MODULE_PATH);
+		kcdfw.logBootstrap(context.package.name, "Module init: %q", KCDFW_MODULE_PATH);
 	end
 
 	KCDFW_MODULE_PATH = nil;
 end
 
 kcdfw.logBootstrap(kcdfw.package.name, "Bootstrapping started.");
-kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration", "EventListeners");
-kcdfw.bootstrap(kcdfw.paths.util, "Tables", "Text");
-kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.core, "Console", "Registration", "EventListeners");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap(kcdfw.package.name, "Bootstrapping finished.");
 
 
