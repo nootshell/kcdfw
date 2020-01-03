@@ -116,4 +116,4 @@ end
 
 kcdfw.bootstrap(kcdfw.paths.core, "Logging", "Registration");
 
-kcdfw.registerCommand('kcdfw_test', "kcdfw.log(%line)", 'testing');
+kcdfw.registerCommand('kcdfw_test', "kcdfw.logWarning(%line)", 'testing');
