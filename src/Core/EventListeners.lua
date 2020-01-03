@@ -21,3 +21,13 @@ if not kcdfw.runLocal then
 else
 	kcdfw.logInfo("Skipped registering action listener");
 end
+
+
+if not kcdfw.distribution then
+	kcdfw.registerPostLoadingScreen(
+		'kcdfw_debug_hook',
+		function ()
+			kcdfw.logNotice("foo loading screen done thing")
+		end
+	);
+end
