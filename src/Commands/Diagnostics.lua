@@ -11,7 +11,7 @@ local function clock()
 end
 
 kcdfw.evalString = function (expr)
-	kcdfw.logWarning("Beginning eval of expression: %q", expr);
+	kcdfw.logWarning(kcdfw.package.name, "Beginning eval of expression: %q", expr);
 
 	local tBegin = clock();
 	local f, error = load(expr);
@@ -26,14 +26,16 @@ kcdfw.evalString = function (expr)
 		end
 
 		kcdfw.logWarning(
+			kcdfw.package.name,
 			"Eval done: load=%fs, exec=%fs, return=%s%s%s",
 			(tPreExec - tBegin),
 			(tPostExec - tPreExec),
 			resultPad, tostring(result), resultPad
 		);
 	else
-		kcdfw.logError("Eval failed, dumping error below.");
+		kcdfw.logError(kcdfw.package.name, "Eval failed, dumping error below.");
 		kcdfw.log(
+			kcdfw.package.name,
 			kcdfw.bitwiseOr(KCDFW_LEVEL_ERROR, KCDFW_FLAG_NO_PREFIX),
 			error
 		);

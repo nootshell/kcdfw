@@ -31,7 +31,7 @@ if _VERSION == 'Lua 5.1' then
 end
 
 
-kcdfw.log = function (level, fmt, ...)
+kcdfw.log = function (level, label, fmt, ...)
 	local trueLevel = kcdfw.bitwiseAnd(level, 0x0FFF);
 	if trueLevel > kcdfw.logLevel then
 		return;
@@ -43,13 +43,14 @@ kcdfw.log = function (level, fmt, ...)
 	local line = frame.currentline;
 	local idx = sauce:find(kcdfw.paths.root);
 	if idx then
+		-- will never hit on !runLocal, may eventually fix (probably not, dunno)
 		if kcdfw.distribution then
 			sauce = "KCDFW";
 		else
 			sauce = ("%s" .. ((line > 0 and ":%u") or "")):format(sauce:sub(#kcdfw.paths.root + idx + 1), line);
 		end
 	else
-		-- sauce = "External";
+		sauce = label;
 	end
 
 	local strFormatted;
@@ -70,8 +71,8 @@ kcdfw.log = function (level, fmt, ...)
 	end
 end
 
-kcdfw.logNotice("Logging function upgraded.");
-kcdfw.logBootstrap("Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
+kcdfw.logNotice(kcdfw.package.name, "Logging function upgraded.");
+kcdfw.logBootstrap(kcdfw.package.name, "Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
 
 
 

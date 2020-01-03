@@ -59,9 +59,9 @@ kcdfw = {
 	end,
 
 
-	log = function (level, fmt, ...)
+	log = function (level, label, fmt, ...)
 		print(
-			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", kcdfw.bitwiseAnd(level, 0x0FFF), ...)
+			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format(label, kcdfw.bitwiseAnd(level, 0x0FFF), ...)
 		);
 	end,
 	logLevel = KCDFW_LEVEL_INFO
@@ -70,65 +70,73 @@ kcdfw = {
 
 
 
-kcdfw.logDebug = function (fmt, ...)
+kcdfw.logDebug = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_DEBUG, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logVerbose = function (fmt, ...)
+kcdfw.logVerbose = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_VERBOSE, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logInfo = function (fmt, ...)
+kcdfw.logInfo = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_INFO, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logNotice = function (fmt, ...)
+kcdfw.logNotice = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_NOTICE, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logWarning = function (fmt, ...)
+kcdfw.logWarning = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_WARNING, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logError = function (fmt, ...)
+kcdfw.logError = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_ERROR, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logBootstrap = function (fmt, ...)
+kcdfw.logBootstrap = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_BOOTSTRAP, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
 end
 
-kcdfw.logAlways = function (fmt, ...)
+kcdfw.logAlways = function (label, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_ALWAYS, KCDFW_FLAG_EXTRA_FRAME),
+		label,
 		fmt,
 		...
 	);
@@ -174,76 +182,76 @@ kcdfw.bootstrap = function (base, ...)
 	for i, module in ipairs({...}) do
 		KCDFW_MODULE_PATH = ("%s/%s.lua"):format(base, module);
 
-		kcdfw.logVerbose("Module load: %q", KCDFW_MODULE_PATH);
+		kcdfw.logVerbose(kcdfw.package.name, "Module load: %q", KCDFW_MODULE_PATH);
 		if not kcdfw.runLocal then
 			Script.ReloadScript(KCDFW_MODULE_PATH);
 		else
 			dofile(KCDFW_MODULE_PATH);
 		end
-		kcdfw.logBootstrap("Module init: %q", KCDFW_MODULE_PATH);
+		kcdfw.logBootstrap(kcdfw.package.name, "Module init: %q", KCDFW_MODULE_PATH);
 	end
 
 	KCDFW_MODULE_PATH = nil;
 end
 
-kcdfw.logBootstrap("Bootstrapping started.");
+kcdfw.logBootstrap(kcdfw.package.name, "Bootstrapping started.");
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration", "EventListeners");
 kcdfw.bootstrap(kcdfw.paths.util, "Tables", "Text");
 kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
-kcdfw.logBootstrap("Bootstrapping finished.");
+kcdfw.logBootstrap(kcdfw.package.name, "Bootstrapping finished.");
 
 
 
 
 kcdfw.dumpToConsole = function(cmdline, a)
 	if type(cmdline) == "string" then
-		kcdfw.logAlways("Commandline given to function: %q", cmdline);
+		kcdfw.logAlways(kcdfw.package.name, "Commandline given to function: %q", cmdline);
 
 		local nopts = {};
 		local args = kcdfw.parseCmdline(cmdline, nopts);
 		local argc = kcdfw.countTableEntries(args);
 
 		if argc > 0 then
-			kcdfw.logAlways("Arguments passed to this function:");
+			kcdfw.logAlways(kcdfw.package.name, "Arguments passed to this function:");
 			for key, value in pairs(args) do
-				kcdfw.logAlways("\t%q = %q", key, value);
+				kcdfw.logAlways(kcdfw.package.name, "\t%q = %q", key, value);
 			end
 		end
 
 		if #nopts > 0 then
-			kcdfw.logAlways("Nonoptions found while parsing arguments:");
+			kcdfw.logAlways(kcdfw.package.name, "Nonoptions found while parsing arguments:");
 			for i, value in ipairs(nopts) do
-				kcdfw.logAlways("\t%q", value);
+				kcdfw.logAlways(kcdfw.package.name, "\t%q", value);
 			end
 		end
 	end
 
 	local dumpVars;
 
-	kcdfw.logAlways("State:");
+	kcdfw.logAlways(kcdfw.package.name, "State:");
 	dumpVars = {
 		"distribution", "runLocal"
 	};
 	for i, var in ipairs(dumpVars) do
-		kcdfw.logAlways("\t.%s = %q", var, kcdfw[var])
+		kcdfw.logAlways(kcdfw.package.name, "\t.%s = %q", var, kcdfw[var])
 	end
 
-	kcdfw.logAlways("\tpackage:");
+	kcdfw.logAlways(kcdfw.package.name, "\tpackage:");
 	dumpVars = {
 		"date", "version"
 	};
 	for i, var in ipairs(dumpVars) do
-		kcdfw.logAlways("\t\t.%s = %q", var, kcdfw.package[var]);
+		kcdfw.logAlways(kcdfw.package.name, "\t\t.%s = %q", var, kcdfw.package[var]);
 	end
 
-	kcdfw.logAlways("\teventMap:");
+	kcdfw.logAlways(kcdfw.package.name, "\teventMap:");
 	local n;
 	for type, map in pairs(kcdfw.eventMap) do
 		n = kcdfw.countTableEntries(map);
-		kcdfw.logAlways("\t\t.%s (%u callback%s)", type, n, kcdfw.getTextS(n));
+		kcdfw.logAlways(kcdfw.package.name, "\t\t.%s (%u callback%s)", type, n, kcdfw.getTextS(n));
 
 		for id, f in pairs(map) do
-			kcdfw.logAlways("\t\t\t.%s = %s", id, tostring(f));
+			kcdfw.logAlways(kcdfw.package.name, "\t\t\t.%s = %s", id, tostring(f));
 		end
 	end
 end
@@ -259,6 +267,7 @@ kcdfw.registerCommand(
 
 kcdfw.log(
 	((kcdfw.runLocal and KCDFW_LEVEL_BOOTSTRAP) or KCDFW_LEVEL_INFO),
+	kcdfw.package.name,
 	"KCDFW initialized, run %q to dump state.",
 	((kcdfw.runLocal and "kcdfw.dumpToConsole([cmdline])") or "kcdfw_dump")
 );
