@@ -1,5 +1,19 @@
+KCDFW_LEVEL_DEBUG 		= 45;
+
+KCDFW_LEVEL_VERBOSE		= 40;
+KCDFW_LEVEL_INFO		= 35;
+KCDFW_LEVEL_NOTICE		= 30;
+
+KCDFW_LEVEL_WARNING		= 25;
+KCDFW_LEVEL_ERROR		= 20;
+
+KCDFW_LEVEL_BOOTSTRAP	= 10;
+
+
+
+
 kcdfw = {
-	distribution = true,
+	distribution = false,
 
 	package = {
 		name = "&{MOD_NAME}",
@@ -18,24 +32,19 @@ kcdfw = {
 				(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...)
 			);
 		end
-	}
+	},
+
+	logLevel = KCDFW_LEVEL_INFO
 };
 
 
 
 
-KCDFW_LEVEL_DEBUG 		= "dbg";
-
-KCDFW_LEVEL_VERBOSE		= "ver";
-KCDFW_LEVEL_INFO		= "inf";
-KCDFW_LEVEL_NOTICE		= "not";
-
-KCDFW_LEVEL_WARNING		= "wrn";
-KCDFW_LEVEL_ERROR		= "err";
-
-KCDFW_LEVEL_BOOTSTRAP	= "bsp";
-
 function kcdfw:log(level, fmt, ...)
+	if level > kcdfw.logLevel then
+		return
+	end
+
 	kcdfw.__funcs.log(level, fmt, ...)
 end
 
