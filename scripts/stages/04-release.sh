@@ -12,6 +12,7 @@ declare P_ARCHIVE P_ROOT;
 PARAMS+=(
 	['o:']=P_ARCHIVE
 	['r:']=P_ROOT
+	['n:']=P_NAME
 );
 
 parse_params "${@}";
@@ -32,4 +33,4 @@ if [ -z "${P_ROOT}" ]; then
 fi
 
 
-make_archive 'final' "${P_ARCHIVE}" "${P_ROOT}";
+make_archive 'final' "${P_ARCHIVE}" "${P_ROOT}" "${P_NAME}";

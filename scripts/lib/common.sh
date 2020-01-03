@@ -94,6 +94,7 @@ make_archive() {
 	local TYPE="${1}"; shift;
 	local ARCHIVE="${1}"; shift;
 	local ROOT="${1}"; shift;
+	local ROOT_NAME="${1}"; shift;
 
 	if [ -z "${ARCHIVE}" ]; then
 		log_error 'Archive output path not specified.';
@@ -107,6 +108,13 @@ make_archive() {
 
 	ARCHIVE="$(realpath -m "${ARCHIVE}")";
 	rm -f "${ARCHIVE}";
+
+	if [ -n "${ROOT_NAME}" ]; then
+		local NEW_ROOT="${ROOT}/${ROOT_NAME}";
+		mkdir -p "${NEW_ROOT}";
+		mv "${ROOT}"/* "${NEW_ROOT}" || true;
+		ROOT="${NEW_ROOT}";
+	fi
 
 	case "${TYPE}" in
 		pak)

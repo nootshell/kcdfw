@@ -48,4 +48,5 @@ env -i "${STAGES}"/03-pak.sh \
 
 env -i "${STAGES}"/04-release.sh \
 	-i "${P_INTERMEDIATE}" \
-	-o "${P_ARCHIVE}";
+	-o "${P_ARCHIVE}" \
+	-n "${P_NAME}";
