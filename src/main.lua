@@ -60,9 +60,13 @@ kcdfw = {
 
 
 	log = function (level, label, fmt, ...)
-		print(
-			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format(label, kcdfw.bitwiseAnd(level, 0x0FFF), ...)
-		);
+		local str = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(label, kcdfw.bitwiseAnd(level, 0x0FFF), ...);
+
+		if not kcdfw.runLocal then
+			System.LogAlways(str);
+		else
+			print(str);
+		end
 	end,
 	logLevel = KCDFW_LEVEL_INFO
 };
