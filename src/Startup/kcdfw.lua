@@ -23,10 +23,6 @@ kcdfw = {
 	},
 
 	log = function (level, fmt, ...)
-		if kcdfw.distribution and level == "debug" then
-			return;
-		end
-
 		print(
 			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...)
 		);
