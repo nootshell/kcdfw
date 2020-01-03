@@ -28,9 +28,38 @@ kcdfw = {
 		version = "&{MOD_VERSION}"
 	},
 
+
+	-- Lua 5.1 (used in KCD) does not support native bitwise operations, until KCD makes use of 5.2+ these
+	-- functions will have to drop in for that deficiency.
+
+	bitwiseAnd = function (x, y)
+		-- Taken from https://stackoverflow.com/questions/32387117/
+
+		local result = 0
+		local bitval = 1
+
+		while x > 0 and y > 0 do
+		if x % 2 == 1 and y % 2 == 1 then -- test the rightmost bits
+			result = result + bitval      -- set the current bit
+		end
+
+		bitval = bitval * 2 -- shift left
+		x = math.floor(x / 2) -- shift right
+		y = math.floor(y / 2)
+		end
+
+		return result
+	end,
+
+	bitwiseOr = function (x, y)
+		-- Absolutely not ideal, but this works so long as no bits overlap (should be the case in this codebase).
+		return (x + y);
+	end,
+
+
 	log = function (level, fmt, ...)
 		print(
-			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", (level & 0x0FFF), ...)
+			(("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", kcdfw.bitwiseAnd(level, 0x0FFF), ...)
 		);
 	end,
 	logLevel = KCDFW_LEVEL_INFO
@@ -41,7 +70,7 @@ kcdfw = {
 
 kcdfw.logDebug = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_DEBUG | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_DEBUG, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -49,7 +78,7 @@ end
 
 kcdfw.logVerbose = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_VERBOSE | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_VERBOSE, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -57,7 +86,7 @@ end
 
 kcdfw.logInfo = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_INFO | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_INFO, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -65,7 +94,7 @@ end
 
 kcdfw.logNotice = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_NOTICE | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_NOTICE, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -73,7 +102,7 @@ end
 
 kcdfw.logWarning = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_WARNING | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_WARNING, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -81,7 +110,7 @@ end
 
 kcdfw.logError = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_ERROR | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_ERROR, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -89,7 +118,7 @@ end
 
 kcdfw.logBootstrap = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_BOOTSTRAP | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_BOOTSTRAP, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);
@@ -97,7 +126,7 @@ end
 
 kcdfw.logAlways = function (fmt, ...)
 	kcdfw.log(
-		(KCDFW_LEVEL_ALWAYS | KCDFW_FLAG_EXTRA_FRAME),
+		kcdfw.bitwiseOr(KCDFW_LEVEL_ALWAYS, KCDFW_FLAG_EXTRA_FRAME),
 		fmt,
 		...
 	);

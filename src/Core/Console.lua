@@ -1,10 +1,11 @@
 kcdfw.log = function (level, fmt, ...)
-	local trueLevel = (level & 0x0FFF);
+	local trueLevel = kcdfw.bitwiseAnd(level, 0x0FFF);
 	if trueLevel > kcdfw.logLevel then
 		return;
 	end
 
-	local frame = debug.getinfo(2 + ((level & KCDFW_FLAG_EXTRA_FRAME) >> 12));
+	-- awaiting 5.2+ -- local frame = debug.getinfo(2 + (kcdfw.bitwiseAnd(level, KCDFW_FLAG_EXTRA_FRAME) >> 12));
+	local frame = debug.getinfo(2 + (((kcdfw.bitwiseAnd(level, KCDFW_FLAG_EXTRA_FRAME) == KCDFW_FLAG_EXTRA_FRAME) and 1) or 0));
 	local sauce = frame.source;
 	local line = frame.currentline;
 	local idx = sauce:find(kcdfw.paths.root);
@@ -19,7 +20,7 @@ kcdfw.log = function (level, fmt, ...)
 	end
 
 	local strFormatted;
-	if ((level & KCDFW_FLAG_NO_PREFIX) == KCDFW_FLAG_NO_PREFIX) then
+	if (kcdfw.bitwiseAnd(level, KCDFW_FLAG_NO_PREFIX) == KCDFW_FLAG_NO_PREFIX) then
 		strFormatted = fmt:format(...);
 	else
 		if trueLevel > 0 then
