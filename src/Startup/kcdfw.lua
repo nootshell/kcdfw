@@ -77,7 +77,7 @@ local function buildPaths()
 	);
 
 	local rootPath;
-	if !kcdfw.runLocal then
+	if not kcdfw.runLocal then
 		rootPath = "Scripts";
 	else
 		rootPath = pwdPath;
@@ -104,7 +104,7 @@ kcdfw.bootstrap = function (base, ...)
 		KCDFW_MODULE_PATH = ("%s/%s.lua"):format(base, module);
 
 		kcdfw.logVerbose("Module load: %q", KCDFW_MODULE_PATH);
-		if !kcdfw.runLocal then
+		if not kcdfw.runLocal then
 			Script.ReloadScript(KCDFW_MODULE_PATH);
 		else
 			dofile(KCDFW_MODULE_PATH);
