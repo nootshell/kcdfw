@@ -1,0 +1,12 @@
+*
+!*/
+
+!*.lua
+
+!*.sh
+!Makefile
+
+!.gitignore
+
+intermediate
+dist
