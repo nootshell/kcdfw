@@ -42,7 +42,7 @@ kcdfw.logBootstrap("Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRA
 
 
 kcdfw.normalizeCmdlineKey = function(key)
-	return key:gsub("^-*", "");
+	return key:gsub("^-*", ""):gsub("=.*$", "");
 end
 
 kcdfw.parseCmdline = function(cmdline, nonoptions)
