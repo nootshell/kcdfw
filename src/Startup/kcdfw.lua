@@ -241,6 +241,10 @@ kcdfw.dumpToConsole = function(cmdline, a)
 	for type, map in pairs(kcdfw.eventMap) do
 		n = kcdfw.countTableEntries(map);
 		kcdfw.logAlways("\t\t.%s (%u callback%s)", type, n, kcdfw.getTextS(n));
+
+		for id, f in pairs(map) do
+			kcdfw.logAlways("\t\t\t.%s = %s", id, tostring(f));
+		end
 	end
 end
 
