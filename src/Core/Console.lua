@@ -5,13 +5,14 @@ kcdfw.log = function (level, fmt, ...)
 	end
 
 	local frame = debug.getinfo(2 + ((level & KCDFW_FLAG_EXTRA_FRAME) >> 12));
-	local sauce = frame.source, idx;
-	idx = sauce:find(kcdfw.paths.root);
+	local sauce = frame.source;
+	local line = frame.currentline;
+	local idx = sauce:find(kcdfw.paths.root);
 	if idx then
 		if kcdfw.distribution then
 			sauce = "KCDFW";
 		else
-			sauce = ("%s" .. ((frame.linedefined > 0 and ":%u") or "")):format(sauce:sub(#kcdfw.paths.root + idx + 1), frame.linedefined);
+			sauce = ("%s" .. ((line > 0 and ":%u") or "")):format(sauce:sub(#kcdfw.paths.root + idx + 1), line);
 		end
 	else
 		-- sauce = "External";
