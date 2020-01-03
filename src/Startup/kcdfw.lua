@@ -156,5 +156,6 @@ kcdfw.bootstrap = function (base, ...)
 end
 
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
+kcdfw.bootstrap(kcdfw.paths.util, "Tables");
 
 kcdfw.registerCommand('kcdfw_test', "kcdfw.logWarning(%line)", 'testing');
