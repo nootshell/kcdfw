@@ -1,9 +1,33 @@
 kcdfw.log = function (level, fmt, ...)
-	if level > kcdfw.logLevel then
+	local trueLevel = (level & 0x0FFF);
+	if trueLevel > kcdfw.logLevel then
 		return;
 	end
 
-	local strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...);
+	local frame = debug.getinfo(2 + ((level & KCDFW_FLAG_EXTRA_FRAME) >> 12));
+	local sauce = frame.source, idx;
+	idx = sauce:find(kcdfw.paths.root);
+	if idx then
+		if kcdfw.distribution then
+			sauce = "KCDFW";
+		else
+			sauce = ("%s" .. ((frame.linedefined > 0 and ":%u") or "")):format(sauce:sub(#kcdfw.paths.root + idx + 1), frame.linedefined);
+		end
+	else
+		-- sauce = "External";
+	end
+
+	local strFormatted;
+	if ((level & KCDFW_FLAG_NO_PREFIX) == KCDFW_FLAG_NO_PREFIX) then
+		strFormatted = fmt:format(...);
+	else
+		if trueLevel > 0 then
+			strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(sauce, trueLevel, ...);
+		else
+			strFormatted = (("%s %s"):format("[%s]", fmt)):format(sauce, ...);
+		end
+	end
+
 	if not kcdfw.runLocal then
 		System.LogAlways(strFormatted);
 	else
