@@ -3,7 +3,7 @@ kcdfw.__funcs.log = function (level, fmt, ...)
 		return;
 	end
 
-	local strFormatted = (("%s %s"):format("[%s]", fmt)):format(level, ...);
+	local strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...);
 	if kcdfw.distribution then
 		System.LogAlways(strFormatted);
 	else
@@ -11,4 +11,4 @@ kcdfw.__funcs.log = function (level, fmt, ...)
 	end
 end
 
-kcdfw:logNotice("Logging function overridden.");
+kcdfw:logNotice("Logging function upgraded.");
