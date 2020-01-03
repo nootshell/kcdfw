@@ -28,6 +28,8 @@ kcdfw = {
 		version = "&{MOD_VERSION}"
 	},
 
+	eventMap = { },
+
 
 	-- Lua 5.1 (used in KCD) does not support native bitwise operations, until KCD makes use of 5.2+ these
 	-- functions will have to drop in for that deficiency.
@@ -185,7 +187,7 @@ kcdfw.bootstrap = function (base, ...)
 end
 
 kcdfw.logBootstrap("Bootstrapping started.");
-kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
+kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration", "EventListeners");
 kcdfw.bootstrap(kcdfw.paths.util, "Tables");
 kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap("Bootstrapping finished.");
@@ -194,9 +196,9 @@ kcdfw.logBootstrap("Bootstrapping finished.");
 
 
 kcdfw.dumpToConsole = function(cmdline, a)
-	kcdfw.logAlways("Commandline given to function: %q", cmdline);
-
 	if type(cmdline) == "string" then
+		kcdfw.logAlways("Commandline given to function: %q", cmdline);
+
 		local nopts = {};
 		local args = kcdfw.parseCmdline(cmdline, nopts);
 		local argc = kcdfw.countTableEntries(args);
@@ -218,20 +220,25 @@ kcdfw.dumpToConsole = function(cmdline, a)
 
 	local dumpVars;
 
-	kcdfw.logAlways("Version:");
-	dumpVars = {
-		"date", "version"
-	};
-	for i, var in ipairs(dumpVars) do
-		kcdfw.logAlways("\t%s = %q", var, kcdfw.package[var]);
-	end
-
 	kcdfw.logAlways("State:");
 	dumpVars = {
 		"distribution", "runLocal"
 	};
 	for i, var in ipairs(dumpVars) do
-		kcdfw.logAlways("\t%s = %q", var, kcdfw[var])
+		kcdfw.logAlways("\t.%s = %q", var, kcdfw[var])
+	end
+
+	kcdfw.logAlways("\tpackage:");
+	dumpVars = {
+		"date", "version"
+	};
+	for i, var in ipairs(dumpVars) do
+		kcdfw.logAlways("\t\t.%s = %q", var, kcdfw.package[var]);
+	end
+
+	kcdfw.logAlways("\teventMap:");
+	for type, map in pairs(kcdfw.eventMap) do
+		kcdfw.logAlways("\t\t.%s (%u callbacks)", type, kcdfw.countTableEntries(map));
 	end
 end
 
