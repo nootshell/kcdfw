@@ -157,6 +157,7 @@ end
 
 kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
 kcdfw.bootstrap(kcdfw.paths.util, "Tables");
+kcdfw.bootstrap(kcdfw.paths.cmds, "Diagnostics");
 
 
 
