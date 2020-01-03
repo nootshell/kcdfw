@@ -104,6 +104,14 @@ local function buildPaths()
 end
 
 
+kcdfw.paths = buildPaths();
+
+kcdfw:logDebug("paths.root    = %q", kcdfw.paths.root);
+kcdfw:logDebug("paths.core    = %q", kcdfw.paths.core);
+
+
+
+
 KCDFW_MODULE_PATH = nil;
 function kcdfw:bootstrap(base, ...)
 	for i, module in ipairs({...}) do
@@ -121,13 +129,4 @@ function kcdfw:bootstrap(base, ...)
 	KCDFW_MODULE_PATH = nil;
 end
 
-
-kcdfw.paths = buildPaths();
-
-
-
-
-kcdfw:logDebug("paths.root    = %q", kcdfw.paths.root);
-kcdfw:logDebug("paths.core    = %q", kcdfw.paths.core);
-
-kcdfw:bootstrap(kcdfw.paths.core, "Logging", "Override", "Diagnostics");
+kcdfw:bootstrap(kcdfw.paths.core, "Logging");
