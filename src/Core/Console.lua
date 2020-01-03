@@ -1,3 +1,32 @@
+-- For some reason Lua 5.1 is a total static nightmare.
+local function workaroundStupidShit(fmt, tbl)
+	local newTable = { };
+
+	local defaultMap = {
+		u = 0,
+		s = '',
+		f = 0.0,
+		q = ''
+	};
+	local default;
+	for f in fmt:gmatch("%%[A-Za-z]") do
+		default = defaultMap[f:sub(2)];
+
+		if default then
+			table.insert(newTable, default);
+		end
+	end
+
+	if type(tbl) == "table" then
+		for i, value in ipairs(tbl) do
+			newTable[i] = tostring(value)
+		end
+	end
+
+	return newTable
+end
+
+
 kcdfw.log = function (level, fmt, ...)
 	local trueLevel = kcdfw.bitwiseAnd(level, 0x0FFF);
 	if trueLevel > kcdfw.logLevel then
@@ -21,12 +50,12 @@ kcdfw.log = function (level, fmt, ...)
 
 	local strFormatted;
 	if (kcdfw.bitwiseAnd(level, KCDFW_FLAG_NO_PREFIX) == KCDFW_FLAG_NO_PREFIX) then
-		strFormatted = fmt:format(...);
+		strFormatted = fmt:format(unpack(workaroundStupidShit(fmt, {...})));
 	else
 		if trueLevel > 0 then
-			strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(sauce, trueLevel, ...);
+			strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format(sauce, trueLevel, unpack(workaroundStupidShit(fmt, {...})));
 		else
-			strFormatted = (("%s %s"):format("[%s]", fmt)):format(sauce, ...);
+			strFormatted = (("%s %s"):format("[%s]", fmt)):format(sauce, unpack(workaroundStupidShit(fmt, {...})));
 		end
 	end
 
