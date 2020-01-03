@@ -4,7 +4,7 @@ kcdfw.log = function (level, fmt, ...)
 	end
 
 	local strFormatted = (("%s %s %s"):format("[%s]", "(%s)", fmt)):format("KCDFW", level, ...);
-	if kcdfw.distribution then
+	if not kcdfw.runLocal then
 		System.LogAlways(strFormatted);
 	else
 		print(strFormatted);
@@ -12,4 +12,4 @@ kcdfw.log = function (level, fmt, ...)
 end
 
 kcdfw.logNotice("Logging function upgraded.");
-kcdfw.logBootstrap("Log level set to %u-%u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
+kcdfw.logBootstrap("Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);

@@ -13,7 +13,8 @@ KCDFW_LEVEL_BOOTSTRAP	= 10;
 
 
 kcdfw = {
-	distribution = false, -- [intermeta:true]
+	distribution = false, -- [intermeta-TODO:ask]
+	runLocal = true, -- [intermeta:false]
 
 	package = {
 		name = "&{MOD_NAME}",
@@ -76,7 +77,7 @@ local function buildPaths()
 	);
 
 	local rootPath;
-	if kcdfw.distribution then
+	if !kcdfw.runLocal then
 		rootPath = "Scripts";
 	else
 		rootPath = pwdPath;
@@ -103,7 +104,7 @@ kcdfw.bootstrap = function (base, ...)
 		KCDFW_MODULE_PATH = ("%s/%s.lua"):format(base, module);
 
 		kcdfw.logVerbose("Module load: %q", KCDFW_MODULE_PATH);
-		if kcdfw.distribution then
+		if !kcdfw.runLocal then
 			Script.ReloadScript(KCDFW_MODULE_PATH);
 		else
 			dofile(KCDFW_MODULE_PATH);
@@ -114,6 +115,6 @@ kcdfw.bootstrap = function (base, ...)
 	KCDFW_MODULE_PATH = nil;
 end
 
-kcdfw.bootstrap(kcdfw.paths.core, "Logging", "Registration");
+kcdfw.bootstrap(kcdfw.paths.core, "Console", "Registration");
 
 kcdfw.registerCommand('kcdfw_test', "kcdfw.logWarning(%line)", 'testing');
