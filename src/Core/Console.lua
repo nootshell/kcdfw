@@ -31,7 +31,7 @@ if _VERSION == 'Lua 5.1' then
 end
 
 
-kcdfw.log = function (level, label, fmt, ...)
+kcdfw.log = function (level, context, fmt, ...)
 	local trueLevel = kcdfw.bitwiseAnd(level, 0x0FFF);
 	if trueLevel > kcdfw.logLevel then
 		return;
@@ -50,7 +50,7 @@ kcdfw.log = function (level, label, fmt, ...)
 			sauce = ("%s" .. ((line > 0 and ":%u") or "")):format(sauce:sub(#kcdfw.paths.root + idx + 1), line);
 		end
 	else
-		sauce = label;
+		sauce = context.package.name;
 	end
 
 	local strFormatted;
@@ -71,8 +71,8 @@ kcdfw.log = function (level, label, fmt, ...)
 	end
 end
 
-kcdfw.logNotice(kcdfw.package.name, "Logging function upgraded.");
-kcdfw.logBootstrap(kcdfw.package.name, "Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
+kcdfw.logNotice(kcdfw, "Logging function upgraded.");
+kcdfw.logBootstrap(kcdfw, "Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
 
 
 
