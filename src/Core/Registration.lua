@@ -1,6 +1,10 @@
-kcdfw.registerCommand = function (command, expr, usage)
+kcdfw.registerCommand = function (command, expr, description, usage)
 	if not kcdfw.runLocal then
-		System.AddCCommand(command, expr, usage);
+		System.AddCCommand(
+			command,
+			expr,
+			kcdfw.trimText(("Usage: %s %s\n\n%s"):format(command, usage, description))
+		);
 		kcdfw.logNotice(kcdfw.package.name, "Command registered: %q", command);
 		return;
 	end

@@ -45,5 +45,6 @@ end
 kcdfw.registerCommand(
 	"kcdfw_eval",
 	"kcdfw.evalString(%line)",
-	"Evaluates the entire cmdline as a Lua expression.\nTo enable the use of the '=' sign, use command as \"kcdfw_eval= [expr]\"."
+	"Evaluates the entire cmdline as a Lua expression.\nTo enable the use of the '=' sign, use command as \"kcdfw_eval= [expr]\".",
+	"<expr>"
 );
