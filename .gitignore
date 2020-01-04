@@ -6,6 +6,7 @@
 !*.sh
 !Makefile
 
+!README.md
 !.gitignore
 !.editorconfig
 
