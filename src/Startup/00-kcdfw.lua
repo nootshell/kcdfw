@@ -155,6 +155,10 @@ kcdfw.getScriptRoot = function()
 		1,
 		pwdPath:find("/[^/]*$") - 1
 	);
+	pwdPath = pwdPath:sub(
+		1,
+		pwdPath:find("/[^/]*$") - 1
+	);
 
 	local rootPath;
 	if not kcdfw.runLocal then
