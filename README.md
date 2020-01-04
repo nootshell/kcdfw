@@ -12,4 +12,4 @@ Building was tested successfully on both Debian 10 and the Ubuntu 18 Subsystem o
 
 
 ## Installing
-After building, you can obtain the mod's archive in the `dist/` folder. Extract this archive in the `Mods/` folder in your Kingdom Come: Deliverance installation folder, e.g.: `C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance\Mods`.
+After building, you can obtain the mod's archive from the `dist/` folder. Extract this archive in the `Mods/` folder in your Kingdom Come: Deliverance installation folder, e.g.: `C:\Program Files (x86)\Steam\steamapps\common\KingdomComeDeliverance\Mods`.
