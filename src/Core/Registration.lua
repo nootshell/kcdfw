@@ -3,7 +3,7 @@ kcdfw.registerCommand = function (command, expr, description, usage)
 		System.AddCCommand(
 			command,
 			expr,
-			kcdfw.trimText(("Usage: %s %s\n\n%s"):format(command, usage, description))
+			kcdfw.trimText(("Usage: %s %s\n\n%s"):format(command, (usage or ""), description))
 		);
 		kcdfw.logNotice(kcdfw, "Command registered: %q", command);
 		return;
