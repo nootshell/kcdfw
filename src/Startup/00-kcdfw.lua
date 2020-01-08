@@ -76,6 +76,11 @@ kcdfw = {
 
 
 
+if kcdfw.runLocal and not kcdfw.distribution then
+	kcdfw.logLevel = KCDFW_LEVEL_DEBUG;
+end
+
+
 kcdfw.logDebug = function (context, fmt, ...)
 	kcdfw.log(
 		kcdfw.bitwiseOr(KCDFW_LEVEL_DEBUG, KCDFW_FLAG_EXTRA_FRAME),
