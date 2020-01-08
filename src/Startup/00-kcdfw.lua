@@ -28,6 +28,8 @@ kcdfw = {
 		version = "&{META_VERSION}"
 	},
 
+	usersMap = { },
+
 	eventMap = { },
 
 
@@ -202,6 +204,10 @@ kcdfw.bootstrap = function (context, base, ...)
 	end
 
 	KCDFW_MODULE_PATH = nil;
+
+	if context and context.package.name and not kcdfw.usersMap[context.package.name] then
+		kcdfw.usersMap[context.package.name] = context;
+	end
 end
 
 kcdfw.logBootstrap(kcdfw, "Bootstrapping started.");
@@ -252,6 +258,11 @@ kcdfw.dumpToConsole = function(cmdline, a)
 	};
 	for i, var in ipairs(dumpVars) do
 		kcdfw.logAlways(kcdfw, "\t\t.%s = %q", var, kcdfw.package[var]);
+	end
+
+	kcdfw.logAlways(kcdfw, "\tusersMap:");
+	for name, context in pairs(kcdfw.usersMap) do
+		kcdfw.logAlways(kcdfw, "\t\t%q = %s", name, tostring(context));
 	end
 
 	kcdfw.logAlways(kcdfw, "\teventMap:");
