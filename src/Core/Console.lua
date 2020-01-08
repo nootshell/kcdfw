@@ -125,3 +125,11 @@ kcdfw.parseCmdline = function(cmdline, nonoptions)
 
 	return found;
 end
+
+-- Abbreviated parseCmdline wrapper.
+function cmdtab(cmdline)
+	local nopts = {};
+	local res = kcdfw.parseCmdline(cmdline, nopts);
+	res.__nopts = nopts;
+	return res;
+end
