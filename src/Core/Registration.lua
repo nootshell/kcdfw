@@ -4,7 +4,7 @@ kcdfw.registerCommand = function(command, expr, description, usage)
 	local strDescription = description;
 
 	if type(usage) == "table" then
-		strUsage = "[-";
+		strUsage = "";
 		strUsageEx = "\n\nOptions:";
 
 		local strUsageVal = "";
@@ -42,7 +42,11 @@ kcdfw.registerCommand = function(command, expr, description, usage)
 			strUsageEx = strUsageEx .. ("\n  -%s  %s"):format(opt, strTmpDesc);
 		end
 
-		strUsage = strUsage .. "]" .. strUsageVal;
+		if strUsage ~= "" then
+			strUsage = "[-" .. strUsage .. "] ";
+		end
+
+		strUsage = strUsage .. kcdfw.trimText(strUsageVal);
 	end
 
 	if not strUsage then
