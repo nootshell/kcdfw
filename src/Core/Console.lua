@@ -131,5 +131,6 @@ function cmdtab(cmdline)
 	local nopts = {};
 	local res = kcdfw.parseCmdline(cmdline, nopts);
 	res.__nopts = nopts;
+	res.__values = nopts; -- TODO: distinguish between non-options and values, e.g. values only come after all params/--
 	return res;
 end
