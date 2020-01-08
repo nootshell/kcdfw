@@ -25,7 +25,7 @@ end
 
 if not kcdfw.distribution then
 	kcdfw.registerPostLoadingScreen(
-		'kcdfw_debug_hook',
+		'kcdfw_main_hook',
 		function ()
 			kcdfw.logInfo(kcdfw, "KCDFW loaded and available.");
 		end
