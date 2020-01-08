@@ -6,11 +6,34 @@ kcdfw.registerCommand = function(command, expr, description, usage)
 	if type(usage) == "table" then
 		strUsage = "[-";
 		strUsageEx = "\n\nOptions:";
+
+		local strUsageVal = "";
+		local strTmpDesc;
+		local strTmpOpt;
 		for opt, desc in pairs(usage) do
-			strUsage = strUsage .. opt;
-			strUsageEx = strUsageEx .. "\n  -" .. opt .. "  " .. desc;
+			if type(desc) == "table" then
+				if desc.value then
+					strTmpOpt = false;
+
+					strUsageVal = strUsageVal .. (" -%s <%s>"):format(opt, desc.value);
+				else
+					strTmpOpt = opt;
+				end
+
+				strTmpDesc = desc.description;
+			else
+				strTmpOpt = opt;
+				strTmpDesc = desc;
+			end
+
+			if strTmpOpt then
+				strUsage = strUsage .. strTmpOpt;
+			end
+
+			strUsageEx = strUsageEx .. ("\n  -%s  %s"):format(opt, strTmpDesc);
 		end
-		strUsage = strUsage .. "]";
+
+		strUsage = strUsage .. "]" .. strUsageVal;
 	end
 
 	if not strUsage then
