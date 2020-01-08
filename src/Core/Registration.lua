@@ -10,12 +10,21 @@ kcdfw.registerCommand = function(command, expr, description, usage)
 		local strUsageVal = "";
 		local strTmpDesc;
 		local strTmpOpt;
+		local padL; local padR;
 		for opt, desc in pairs(usage) do
 			if type(desc) == "table" then
 				if desc.value then
 					strTmpOpt = false;
 
-					strUsageVal = strUsageVal .. (" -%s <%s>"):format(opt, desc.value);
+					if desc.optional then
+						padL = "[";
+						padR = "]";
+					else
+						padL = "";
+						padR = "";
+					end
+
+					strUsageVal = strUsageVal .. (" %s-%s <%s>%s"):format(padL, opt, desc.value, padR);
 				else
 					strTmpOpt = opt;
 				end
