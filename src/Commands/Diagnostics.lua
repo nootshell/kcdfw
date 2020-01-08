@@ -52,6 +52,47 @@ kcdfw.registerCommand(
 
 
 
+kcdfw.cmdInspect = function(args)
+	local dumpFun = (args.functions or args.f);
+	local lookGlobal = (args.global or args.g);
+	local objectName = (args.object or args.o);
+
+
+	if not objectName then
+		kcdfw.logError(kcdfw, "Missing/invalid object name.");
+		return;
+	end
+
+
+	local object = nil;
+
+	if lookGlobal then
+		object = _G[objectName];
+	end
+
+
+	kcdfw.logAlways(kcdfw, "%s = %s", objectName, kcdfw.stringRepresentation(object));
+
+
+	if dumpFun then
+		kcdfw.dumpFunctions(object);
+	end
+end
+
+kcdfw.registerCommand(
+	"kcdfw_inspect",
+	"kcdfw.cmdInspect(cmdtab(%line))",
+	"Uses introspection to display properties of the specified object.",
+	{
+		f = "Dump function listing.",
+		g = "Use the global table to look up the object.",
+		o = { value = "object_name", description = "Specify the object to inspect." }
+	}
+)
+
+
+
+
 kcdfw.cmdLogLevel = function(args)
 	kcdfw.setLogLevel(args.level or args.l);
 end

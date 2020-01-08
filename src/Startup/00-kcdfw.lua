@@ -217,14 +217,14 @@ end
 
 kcdfw.logBootstrap(kcdfw, "Bootstrapping started.");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.core, "Console", "Registration", "EventListeners");
-kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text", "Sanity");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text", "Sanity", "Introspection");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap(kcdfw, "Bootstrapping finished.");
 
 
 
 
-kcdfw.dumpToConsole = function(cmdline, a)
+kcdfw.dumpToConsole = function(cmdline)
 	if type(cmdline) == "string" then
 		kcdfw.logAlways(kcdfw, "Commandline given to function: %q", cmdline);
 
