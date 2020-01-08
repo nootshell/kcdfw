@@ -48,3 +48,19 @@ kcdfw.registerCommand(
 	"Evaluates the entire cmdline as a Lua expression.\nTo enable the use of the '=' sign, use command as \"kcdfw_eval= [expr]\".",
 	"<expr>"
 );
+
+
+
+
+kcdfw.cmdLogLevel = function(args)
+	kcdfw.setLogLevel(args.level or args.l);
+end
+
+kcdfw.registerCommand(
+	"kcdfw_loglevel",
+	"kcdfw.cmdLogLevel(cmdtab(%line))",
+	"Sets the log level for the loggers shipped with KCDFW.",
+	{
+		l = { value = "level", description = "The level to use. Can be numeric or named." }
+	}
+);

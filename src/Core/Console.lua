@@ -77,6 +77,41 @@ kcdfw.logBootstrap(kcdfw, "Permitted log levels set to %u to %u.", KCDFW_LEVEL_B
 
 
 
+kcdfw.strToLogLevel = function(str)
+	if str == "debug" then return KCDFW_LEVEL_DEBUG; end
+	if str == "verbose" then return KCDFW_LEVEL_VERBOSE; end
+	if str == "info" then return KCDFW_LEVEL_INFO; end
+	if str == "notice" then return KCDFW_LEVEL_NOTICE; end
+	if str == "warning" then return KCDFW_LEVEL_WARNING; end
+	if str == "error" then return KCDFW_LEVEL_ERROR; end
+
+	return nil;
+end
+
+kcdfw.setLogLevel = function(level)
+	local lvl = level;
+
+	if not kcdfw.isInt(lvl) then
+		lvl = kcdfw.strToLogLevel(lvl);
+	end
+
+	if not kcdfw.isInt(lvl) then
+		kcdfw.logError(kcdfw, "Invalid level indicator given: %s", tostring(level));
+		return;
+	end
+
+	local old = kcdfw.logLevel;
+	if lvl == old then
+		kcdfw.log(lvl, kcdfw, "Log level remained unchanged.");
+	else
+		kcdfw.logLevel = lvl;
+		kcdfw.log(lvl, kcdfw, "Log level changed from %u to %u.", old, lvl);
+	end
+end
+
+
+
+
 kcdfw.normalizeCmdlineKey = function(key)
 	return key:gsub("^-*", ""):gsub("=.*$", "");
 end
