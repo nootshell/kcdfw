@@ -217,7 +217,7 @@ end
 
 kcdfw.logBootstrap(kcdfw, "Bootstrapping started.");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.core, "Console", "Registration", "EventListeners");
-kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text", "Sanity");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap(kcdfw, "Bootstrapping finished.");
 
