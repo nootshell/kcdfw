@@ -157,7 +157,7 @@ end
 
 
 kcdfw.getScriptRoot = function()
-	local pwdPath = debug.getinfo(1, "S").source:sub(2);
+	local pwdPath = debug.getinfo(2, "S").source:sub(2);
 	pwdPath = pwdPath:sub(
 		1,
 		pwdPath:find("/[^/]*$") - 1
