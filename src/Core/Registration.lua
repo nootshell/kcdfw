@@ -1,15 +1,44 @@
-kcdfw.registerCommand = function (command, expr, description, usage)
+kcdfw.registerCommand = function(command, expr, description, usage)
+	local strUsage = usage;
+	local strUsageEx = "";
+	local strDescription = description;
+
+	if type(usage) == "table" then
+		strUsage = "[-";
+		strUsageEx = "\n\nOptions:";
+		for opt, desc in pairs(usage) do
+			strUsage = strUsage .. opt;
+			strUsageEx = strUsageEx .. "\n  -" .. opt .. "  " .. desc;
+		end
+		strUsage = strUsage .. "]";
+	end
+
+	if not strUsage then
+		strUsage = "";
+	end
+	if not strDescription then
+		strDescription = "";
+	end
+
 	if not kcdfw.runLocal then
 		System.AddCCommand(
 			command,
 			expr,
-			kcdfw.trimText(("Usage: %s %s\n\n%s"):format(command, (usage or ""), description))
+			kcdfw.trimText(
+				("%s\n\nUsage: %s %s%s"):format(
+					strDescription,
+					command,
+					strUsage,
+					strUsageEx
+				)
+			)
 		);
 		kcdfw.logNotice(kcdfw, "Command registered: %q", command);
-		return;
+	else
+		kcdfw.logNotice(kcdfw, "Skipped registering command: %q", command);
+		kcdfw.logDebug(kcdfw, strDescription);
+		kcdfw.logDebug(kcdfw, ("Usage: %s %s%s"):format(command, strUsage, strUsageEx));
 	end
-
-	kcdfw.logNotice(kcdfw, "Skipped registering command: %q", command);
 end
 
 
