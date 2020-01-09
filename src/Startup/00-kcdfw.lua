@@ -216,7 +216,7 @@ kcdfw.bootstrap = function (context, base, ...)
 end
 
 kcdfw.logBootstrap(kcdfw, "Bootstrapping started.");
-kcdfw.bootstrap(kcdfw, kcdfw.paths.core, "Console", "Registration", "EventListeners");
+kcdfw.bootstrap(kcdfw, kcdfw.paths.core, "Override", "Console", "Registration", "EventListeners");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.util, "Tables", "Text", "Sanity", "Introspection");
 kcdfw.bootstrap(kcdfw, kcdfw.paths.cmds, "Diagnostics");
 kcdfw.logBootstrap(kcdfw, "Bootstrapping finished.");
