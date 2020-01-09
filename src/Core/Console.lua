@@ -120,42 +120,44 @@ kcdfw.parseCmdline = function(cmdline, nonoptions)
 	local found = {};
 	local nopts = (nonoptions or {});
 
-	local key = nil;
-	local optend = false;
-	for arg in cmdline:gmatch("%S+") do
-		if not optend then
-			if arg:sub(1, 1) == '-' then
-				if key then
-					found[key] = true
-				end
+	if type(cmdline) == "string" then
+		local key = nil;
+		local optend = false;
+		for arg in cmdline:gmatch("%S+") do
+			if not optend then
+				if arg:sub(1, 1) == '-' then
+					if key then
+						found[key] = true
+					end
 
-				if arg == '--' then
-					key = nil;
-					optend = true;
+					if arg == '--' then
+						key = nil;
+						optend = true;
+					else
+						key = kcdfw.normalizeCmdlineKey(arg);
+					end
 				else
-					key = kcdfw.normalizeCmdlineKey(arg);
+					if key then
+						found[key] = arg;
+						key = nil;
+					else
+						table.insert(nopts, arg);
+					end
 				end
 			else
-				if key then
-					found[key] = arg;
-					key = nil;
-				else
-					table.insert(nopts, arg);
-				end
+				table.insert(nopts, arg);
 			end
-		else
-			table.insert(nopts, arg);
 		end
-	end
 
-	if key then
-		found[key] = true
-		key = nil;
-	end
+		if key then
+			found[key] = true
+			key = nil;
+		end
 
-	-- For any key=value pairs, override.
-	for key, value in cmdline:gsub(" -- .*", ""):gmatch("-?(%S+)=(%S+)") do
-		found[kcdfw.normalizeCmdlineKey(key)] = value;
+		-- For any key=value pairs, override.
+		for key, value in cmdline:gsub(" -- .*", ""):gmatch("-?(%S+)=(%S+)") do
+			found[kcdfw.normalizeCmdlineKey(key)] = value;
+		end
 	end
 
 	return found;
