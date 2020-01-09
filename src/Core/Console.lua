@@ -72,7 +72,7 @@ kcdfw.log = function (level, context, fmt, ...)
 end
 
 kcdfw.logNotice(kcdfw, "Logging function upgraded.");
-kcdfw.logBootstrap(kcdfw, "Permitted log levels set to %u to %u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
+kcdfw.logBootstrap(kcdfw, "Permitting log levels %u-%u.", KCDFW_LEVEL_BOOTSTRAP, kcdfw.logLevel);
 
 
 
