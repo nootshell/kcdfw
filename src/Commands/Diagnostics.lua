@@ -35,9 +35,9 @@ kcdfw.evalString = function (expr)
 	else
 		kcdfw.logError(kcdfw, "Eval failed, dumping error below.");
 		kcdfw.log(
-			kcdfw,
 			kcdfw.bitwiseOr(KCDFW_LEVEL_ERROR, KCDFW_FLAG_NO_PREFIX),
-			error
+			kcdfw,
+			tostring(error)
 		);
 	end
 end
