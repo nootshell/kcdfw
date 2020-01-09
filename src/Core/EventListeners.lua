@@ -28,6 +28,7 @@ if not kcdfw.distribution then
 		'kcdfw_main_hook',
 		function ()
 			kcdfw.logInfo(kcdfw, "KCDFW loaded and available.");
+			kcdfw.logVerbose(kcdfw, "Bootstrapped contexts: %s", table.concat(kcdfw.getTableKeys(kcdfw.usersMap), ", "));
 		end
 	);
 end

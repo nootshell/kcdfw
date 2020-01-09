@@ -7,3 +7,14 @@ kcdfw.countTableEntries = function (table)
 
 	return n;
 end
+
+
+kcdfw.getTableKeys = function(t)
+	local res = { };
+
+	for key, v in pairs(t) do
+		table.insert(res, key);
+	end
+
+	return res;
+end
