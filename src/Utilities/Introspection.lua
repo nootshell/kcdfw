@@ -79,12 +79,18 @@ end
 
 
 
-kcdfw.dumpFunctions = function(object)
+kcdfw.dumpTable = function(object)
+	if type(object) ~= "table" then
+		return;
+	end
+
+	local t;
 	for key, value in pairs(object) do
-		if value and type(value) == "function" then
-			kcdfw.logAlways(kcdfw, "%s(%s)", key, table.concat(kcdfw.getFunctionParams(value), ", "));
+		t = type(value);
+		if value and t == "function" then
+			kcdfw.logAlways(kcdfw, "%s(%s) : %s", key, table.concat(kcdfw.getFunctionParams(value), ", "), t);
 		else
-			kcdfw.logAlways(kcdfw, "%s : %s", key, type(value));
+			kcdfw.logAlways(kcdfw, "%s : %s", key, t);
 		end
 	end
 end

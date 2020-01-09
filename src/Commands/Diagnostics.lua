@@ -53,7 +53,7 @@ kcdfw.registerCommand(
 
 
 kcdfw.cmdInspect = function(args)
-	local dumpFun = (args.functions or args.f);
+	local dump = (args.dump or args.d);
 	local lookGlobal = (args.global or args.g);
 	local objectName = (args.object or args.o);
 
@@ -74,8 +74,8 @@ kcdfw.cmdInspect = function(args)
 	kcdfw.logAlways(kcdfw, "%s = %s", objectName, kcdfw.stringRepresentation(object));
 
 
-	if dumpFun then
-		kcdfw.dumpFunctions(object);
+	if dump then
+		kcdfw.dumpTable(object);
 	end
 end
 
@@ -84,7 +84,7 @@ kcdfw.registerCommand(
 	"kcdfw.cmdInspect(cmdtab(%line))",
 	"Uses introspection to display properties of the specified object.",
 	{
-		f = "Dump function listing.",
+		d = "Dump object.",
 		g = "Use the global table to look up the object.",
 		o = { value = "object_name", description = "Specify the object to inspect." }
 	}
