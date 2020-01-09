@@ -25,14 +25,20 @@ end
 
 
 
-kcdfw.getFunctionParams = function(fun)
-	local res = { };
+kcdfw.getFunctionMeta = function(fun)
+	local res = {
+		info = nil,
+		params = nil
+	};
 
 	pcall(function()
 		local cr = coroutine.create(fun);
 		debug.sethook(
 			cr,
 			function()
+				res.info = debug.getinfo(cr, 2);
+				res.params = { };
+
 				local name;
 				for i = 1, math.huge do
 					name = debug.getlocal(cr, 2, i);
@@ -42,7 +48,7 @@ kcdfw.getFunctionParams = function(fun)
 					end
 
 					if name ~= "(*temporary)" then
-						table.insert(res, name);
+						table.insert(res.params, name);
 					end
 				end
 				error('');
@@ -84,11 +90,39 @@ kcdfw.dumpTable = function(object)
 		return;
 	end
 
-	local t;
+	local noargs = { "?" };
+
+	local t, info;
 	for key, value in pairs(object) do
 		t = type(value);
 		if value and t == "function" then
-			kcdfw.logAlways(kcdfw, "%s(%s) : %s", key, table.concat(kcdfw.getFunctionParams(value), ", "), t);
+			meta = kcdfw.getFunctionMeta(value);
+
+			if meta.info then
+				kcdfw.logAlways(
+					kcdfw,
+					"%s(%s) : %s (%s:%u)",
+					key,
+					table.concat(
+						(meta.params or noargs),
+						", "
+					),
+					t,
+					meta.info.source:sub(2),
+					meta.info.linedefined
+				);
+			else
+				kcdfw.logAlways(
+					kcdfw,
+					"%s(%s) : %s",
+					key,
+					table.concat(
+						(meta.params or noargs),
+						", "
+					),
+					t
+				);
+			end
 		else
 			kcdfw.logAlways(kcdfw, "%s : %s", key, t);
 		end
